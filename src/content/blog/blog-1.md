@@ -13,8 +13,8 @@ Here is how I put this site together using **ABC** Stack.
 ![Image description: A screenshot taken from cloudflare's blog](https://cdn.jsdelivr.net/gh/DKB0512/blog-images/images/blog-1/astro-cf.webp)
 _Astro + Bun + Cloudflare_
 
-- **Bun**: I used Bun as the runtime and package manager. It’s significantly faster than Node.js and handles `npm` packages natively.
 - **Astro**: The "Content Layer" in Astro 5 is a game changer. It treats Markdown files like a local database.
+- **Bun**: I used Bun as the runtime and package manager. It’s significantly faster than Node.js and handles `npm` packages natively.
 - **Cloudflare Pages**: It’s free, it’s fast, and it deploys automatically when I push to GitHub.
 
 ## 1. Starting with Bun
