@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+// 1. Define the Props interface explicitly to fix the "type never" error
+interface Props {
+  page: Page;
+}
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getCollection('blog');
+  
+  const sortedPosts = [...allPosts].sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  );
+
+  // 3. PAGINATE: 25 posts per page
+  return paginate(sortedPosts, { pageSize: 25 });
+}) satisfies GetStaticPaths; // The "satisfies" keyword fixes the "any" type error
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title={`Blog - Page ${page.currentPage}`}>
+  <h1>Articles</h1>
+  
+  <div class="post-list">
+    {page.data.map(post => (
+      <article class="post-item">
+        <time datetime={post.data.date.toISOString()}>
+          {post.data.date.toLocaleDateString('en-IN', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </time>
+        <br />
+        <a href={`/blog/${post.id}`}>
+          {post.data.title}
+        </a>
+      </article>
+    ))}
+  </div>
+
+  <!-- PAGINATION NAV -->
+  {page.lastPage > 1 && (
+    <nav class="pagination">
+      {page.url.prev ? <a href={page.url.prev}>&larr; Newer</a> : <span />}
+      
+      <span class="page-count">
+        {page.currentPage} / {page.lastPage}
+      </span>
+
+      {page.url.next ? <a href={page.url.next}>Older &rarr;</a> : <span />}
+    </nav>
+  )}
+</BaseLayout>
+
+<style>
+  .post-list {
+    margin-top: 2rem;
+  }
+  .post-item {
+    margin-bottom: 0.5rem;
+  }
+  .post-item a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #27272a;
+  }
+  .page-count {
+    color: var(--muted);
+    font-family: monospace;
+  }
+</style>

@@ -1,0 +1,78 @@
+---
+// src/layouts/BaseLayout.astro
+const { title } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <style is:global>
+      :root {
+        --bg: #18181b;      /* Deep Grey */
+        --text: #e4e4e7;    /* Soft White */
+        --accent: #fb923c;  /* Light Orange */
+        --muted: #71717a;   /* Muted Grey */
+      }
+
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', system-ui, sans-serif;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        line-height: 1.6;
+      }
+
+      img {
+        max-width: 100%;    /* Never wider than the text (700px) */
+        height: auto;       /* Maintain aspect ratio */
+        display: block;     /* Removes bottom gap */
+        margin: 2rem auto;  /* Centers the image and adds vertical space */
+        border-radius: 12px;
+        border: 1px solid #27272a;
+        max-width: 100%;
+        aspect-ratio: 16 / 9; 
+        background: #27272a; /* Placeholder color while loading */
+        content-visibility: auto;
+      }
+
+      /* Typography */
+      h1, h2, h3 { color: var(--text); margin-top: 2rem; }
+      a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+      a:hover { opacity: 0.8; text-decoration: underline; }
+      
+      /* Blog List Styling */
+      .post-item { border-bottom: 1px solid #27272a; padding: 20px 0; }
+      time { color: var(--muted); font-family: monospace; font-size: 0.9rem; }
+
+      /* Markdown Content Styling */
+      article { font-size: 1.1rem; }
+      article p { margin-bottom: 1.1rem; color: #d4d4d8; }
+      
+      /* Code Blocks */
+      pre {
+        background: #27272a !important; /* Match the grey theme */
+        padding: 1.25rem;
+        border-radius: 8px;
+        border: 1px solid #3f3f46;
+        overflow-x: auto;
+      }
+      code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
+      
+      /* Navigation */
+      nav { margin-bottom: 50px; display: flex; justify-content: space-between; align-items: center; }
+      .logo { font-weight: 800; color: var(--accent); font-size: 1.2rem; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">DKB_LOGS</a>
+      <div style="color: var(--muted)">// minimalist_blog</div>
+    </nav>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
