@@ -9,7 +9,7 @@ export default defineConfig({
   compressHTML: true,
   markdown: {
     shikiConfig: {
-      theme: "vesper",
+      theme: "one-dark-pro",
       wrap: true,
     },
   },
