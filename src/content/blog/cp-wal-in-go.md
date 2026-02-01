@@ -97,7 +97,7 @@ func alignUp(n int64) int64 {
 }
 ```
 
-This doesn’t make torn writes impossible — it just makes them much less exciting.
+This doesn’t make torn writes impossible, it just makes them much less exciting.
 
 ---
 
