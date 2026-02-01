@@ -1,6 +1,6 @@
 ---
-title: "How I built this dev blog"
-date: 2025-01-24
+title: "How I built this dev blog - The ABC Stack"
+date: 2025-01-25
 description: "Building a fast, dark-themed blog using ABC Stack."
 ---
 

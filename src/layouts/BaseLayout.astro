@@ -1,5 +1,4 @@
 ---
-// src/layouts/BaseLayout.astro
 const { title } = Astro.props;
 ---
 <html lang="en">
@@ -8,6 +7,9 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <style is:global>
+      /* =========================
+         Root Theme Colors
+         ========================= */
       :root {
         --bg: #18181b;      /* Deep Grey */
         --text: #e4e4e7;    /* Soft White */
@@ -15,64 +17,193 @@ const { title } = Astro.props;
         --muted: #71717a;   /* Muted Grey */
       }
 
+      /* =========================
+         Global Styles
+         ========================= */
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         background-color: var(--bg);
         color: var(--text);
         font-family: 'Inter', system-ui, sans-serif;
-        max-width: 720px;
+        width: 80vw;             /* Fill 80% of screen width */
+        max-width: 1000px;       /* Optional: don't get too wide on huge screens */
         margin: 0 auto;
         padding: 40px 20px;
         line-height: 1.6;
       }
 
-      img {
-        max-width: 100%;    /* Never wider than the text (700px) */
-        height: auto;       /* Maintain aspect ratio */
-        display: block;     /* Removes bottom gap */
-        margin: 2rem auto;  /* Centers the image and adds vertical space */
-        border-radius: 12px;
-        border: 1px solid #27272a;
-        max-width: 100%;
-        aspect-ratio: 16 / 9; 
-        background: #27272a; /* Placeholder color while loading */
-        content-visibility: auto;
+      a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+      a:hover {
+        opacity: 0.8;
+        text-decoration: underline;
       }
 
-      /* Typography */
-      h1, h2, h3 { color: var(--text); margin-top: 2rem; }
-      a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
-      a:hover { opacity: 0.8; text-decoration: underline; }
-      
-      /* Blog List Styling */
-      .post-item { border-bottom: 1px solid #27272a; padding: 20px 0; }
-      time { color: var(--muted); font-family: monospace; font-size: 0.9rem; }
+      /* =========================
+         Typography
+         ========================= */
+      h1, h2, h3 {
+        color: var(--text);
+        margin-top: 2rem;
+      }
 
-      /* Markdown Content Styling */
-      article { font-size: 1.1rem; }
-      article p { margin-bottom: 1.1rem; color: #d4d4d8; }
-      
-      /* Code Blocks */
+      article {
+        font-size: 1.1rem;
+      }
+      article p {
+        margin-bottom: 1.1rem;
+        color: #d4d4d8;
+      }
+
+      /* =========================
+         Images
+         ========================= */
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 2rem auto;
+        border-radius: 12px;
+        border: 1px solid #27272a;
+        cursor: zoom-in;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        background: #27272a; /* placeholder for old-img */
+      }
+      img:hover {
+        opacity: 0.9;
+      }
+
+      /* =========================
+          Tables
+         ========================= */
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 2rem 0;
+      }
+      th, td {
+        border: 1px solid #444;
+        padding: 0.75rem;
+        text-align: left;
+      }
+      th {
+        background: #222;
+        color: var(--accent);
+      }
+      td {
+        background: #1f1f23;
+      }
+      tr:nth-child(even) td {
+        background: #27272a;
+      }
+
+
+      /* =========================
+         Code Blocks
+         ========================= */
       pre {
-        background: #27272a !important; /* Match the grey theme */
+        background: #27272a;
         padding: 1.25rem;
         border-radius: 8px;
         border: 1px solid #3f3f46;
         overflow-x: auto;
       }
-      code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
-      
-      /* Navigation */
-      nav { margin-bottom: 50px; display: flex; justify-content: space-between; align-items: center; }
-      .logo { font-weight: 800; color: var(--accent); font-size: 1.2rem; }
+
+      code {
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9rem;
+      }
+
+      /* =========================
+         Blog List Styling
+         ========================= */
+      .post-item {
+        border-bottom: 1px solid #27272a;
+        padding: 20px 0;
+      }
+      time {
+        color: var(--muted);
+        font-family: monospace;
+        font-size: 0.9rem;
+      }
+
+      /* =========================
+         Navigation
+         ========================= */
+      nav {
+        margin-bottom: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-weight: 800;
+        color: var(--accent);
+        font-size: 1.2rem;
+      }
+
+      /* =========================
+         Lightbox
+         ========================= */
+      #lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.85);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        cursor: zoom-out;
+      }
+      #lightbox img {
+        max-width: 90vw;
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        border-radius: 12px;
+      }
     </style>
   </head>
+
   <body>
     <nav>
       <a href="/" class="logo">DKB_LOGS</a>
       <div style="color: var(--muted)">// minimalist_blog</div>
     </nav>
+
     <main>
       <slot />
     </main>
+
+    <div id="lightbox">
+      <img id="lightbox-img" src="" />
+    </div>
+
+    <script>
+      const lightbox: any = document.getElementById('lightbox');
+      const lightboxImg: any = document.getElementById('lightbox-img');
+
+      document.querySelectorAll('article img').forEach((img: any) => {
+        img.addEventListener('click', () => {
+          lightbox.style.display = 'flex';
+          lightboxImg.src = img.src;
+        });
+      });
+
+      lightbox.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+        lightboxImg.src = '';
+      });
+    </script>
   </body>
 </html>
